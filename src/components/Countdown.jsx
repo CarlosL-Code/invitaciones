@@ -60,16 +60,16 @@ export default function Countdown({ targetDateIso }) {
         <span>Faltan muy pocos momentos</span>
       </div>
 
-      <div className="grid grid-cols-4 gap-2 sm:gap-4">
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-4 px-1">
         {timeUnits.map((unit) => (
           <div
             key={unit.label}
-            className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl glass-card bg-gradient-to-b shadow-sm hover:shadow-md transition-shadow duration-200 border border-white"
+            className="flex flex-col items-center justify-center p-2 sm:p-4 rounded-xl sm:rounded-2xl glass-card bg-gradient-to-b shadow-sm hover:shadow-md transition-shadow duration-200 border border-white"
           >
-            <span className={`text-2xl sm:text-4xl font-extrabold tracking-tight ${unit.color}`}>
+            <span className={`text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight ${unit.color}`}>
               {String(unit.value).padStart(2, '0')}
             </span>
-            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">
+            <span className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-0.5 sm:mt-1 uppercase tracking-wider">
               {unit.label}
             </span>
           </div>

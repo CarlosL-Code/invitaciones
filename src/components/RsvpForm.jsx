@@ -244,12 +244,12 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
         {currentUser && !submitted && (
           <form
             onSubmit={handleSubmit}
-            className="glass-card rounded-3xl p-6 sm:p-8 shadow-lg border border-white space-y-6"
+            className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-lg border border-white space-y-5 sm:space-y-6"
           >
             {/* Header de Invitado Detectado */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 to-rose-50/80 border border-purple-100 flex items-center justify-between">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 to-rose-50/80 border border-purple-100 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2.5">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-purple-600 block">
+                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-purple-600 block">
                   Invitado Registrado
                 </span>
                 <p className="font-bold text-slate-800 text-sm">
@@ -261,8 +261,8 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
               </div>
 
               {/* Indicador del Voto Seleccionado en la sección anterior */}
-              <div className="text-right">
-                <span className="text-[11px] font-bold text-slate-400 block">
+              <div className="text-left xs:text-right">
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 block">
                   Tu Predicción:
                 </span>
                 <span className={`inline-flex items-center gap-1 font-bold text-xs px-2.5 py-1 rounded-full ${
@@ -278,11 +278,11 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
                 ¿Podrás asistir este Sábado 7 de Noviembre? *
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => setAttending('yes')}
-                  className={`py-3 px-4 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 min-h-[46px] ${
                     attending === 'yes'
                       ? 'bg-purple-600 text-white border-purple-600 shadow-md shadow-purple-200'
                       : 'bg-white/80 text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -294,7 +294,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
                 <button
                   type="button"
                   onClick={() => setAttending('no')}
-                  className={`py-3 px-4 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 min-h-[46px] ${
                     attending === 'no'
                       ? 'bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-200'
                       : 'bg-white/80 text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -347,7 +347,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
 
                 {/* Campos dinámicos para los nombres de los acompañantes */}
                 <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2.5">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                       <Users className="w-3.5 h-3.5 text-purple-600" />
                       <span>Nombres de tus Acompañantes</span>
@@ -355,7 +355,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
                     <button
                       type="button"
                       onClick={handleAddCompanion}
-                      className="text-xs font-bold text-purple-600 hover:text-purple-800 flex items-center gap-1 bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-lg transition-colors"
+                      className="w-full sm:w-auto text-xs font-bold text-purple-600 hover:text-purple-800 flex items-center justify-center gap-1 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors border border-purple-200/60"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Agregar acompañante</span>

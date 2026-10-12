@@ -42,8 +42,8 @@ export default function RegistrationModal({ isOpen, onRegister }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="bg-gradient-to-b from-white via-rose-50/30 to-sky-50/30 w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white relative overflow-hidden animate-in zoom-in-95 duration-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="bg-gradient-to-b from-white via-rose-50/30 to-sky-50/30 w-full max-w-md max-h-[92vh] overflow-y-auto rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl border border-white relative animate-in zoom-in-95 duration-300">
         {/* Decorative corner glows */}
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-sky-200/50 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-rose-200/50 rounded-full blur-2xl pointer-events-none" />

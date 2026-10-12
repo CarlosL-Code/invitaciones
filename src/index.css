@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
 @layer base {
-  body {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Prevenir zoom automático incómodo en iPhone/iOS al tocar campos */
+  @media screen and (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
   }
 }
 
@@ -18,34 +34,34 @@
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Glassmorphism de alta gala */
+/* Glassmorphism de alta gala optimizado para móviles */
 .glass-card {
   background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.04), 0 0 1px 1px rgba(255, 255, 255, 0.95) inset;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 0 1px 1px rgba(255, 255, 255, 0.95) inset;
 }
 
 .glass-card-boy {
   background: linear-gradient(135deg, rgba(240, 249, 255, 0.92) 0%, rgba(224, 242, 254, 0.85) 100%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(186, 230, 253, 0.8);
-  box-shadow: 0 15px 35px -10px rgba(14, 165, 233, 0.18);
+  box-shadow: 0 10px 25px -10px rgba(14, 165, 233, 0.18);
 }
 
 .glass-card-girl {
   background: linear-gradient(135deg, rgba(255, 241, 242, 0.92) 0%, rgba(255, 228, 230, 0.85) 100%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(254, 205, 211, 0.8);
-  box-shadow: 0 15px 35px -10px rgba(244, 63, 94, 0.18);
+  box-shadow: 0 10px 25px -10px rgba(244, 63, 94, 0.18);
 }
 
 .glass-card-gold {
   background: linear-gradient(135deg, rgba(255, 251, 235, 0.9) 0%, rgba(254, 243, 199, 0.8) 100%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(253, 230, 138, 0.8);
-  box-shadow: 0 15px 35px -10px rgba(217, 119, 6, 0.15);
+  box-shadow: 0 10px 25px -10px rgba(217, 119, 6, 0.15);
 }
 
 /* Floating animations */
@@ -54,7 +70,7 @@
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-8px) rotate(1.5deg);
+    transform: translateY(-6px) rotate(1.2deg);
   }
 }
 
@@ -67,7 +83,7 @@
     transform: translate(0px, 0px) scale(1);
   }
   50% {
-    transform: translate(15px, -10px) scale(1.03);
+    transform: translate(10px, -8px) scale(1.02);
   }
 }
 
@@ -82,7 +98,7 @@
   }
   50% {
     opacity: 1;
-    transform: scale(1.02);
+    transform: scale(1.015);
   }
 }
 

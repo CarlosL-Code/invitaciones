@@ -21,13 +21,13 @@ export default function Navbar({ currentUser, onOpenRegistration, onOpenAdmin })
   return (
     <header className="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3">
-        <div className="glass-card rounded-full px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-lg shadow-rose-950/5 border border-white/80">
+        <div className="glass-card rounded-full px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between shadow-lg shadow-rose-950/5 border border-white/80">
           {/* Logo / Brand */}
-          <a href="#inicio" className="flex items-center gap-2 group">
-            <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-300 via-purple-200 to-sky-300 flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
-              <span className="text-sm">🧸</span>
+          <a href="#inicio" className="flex items-center gap-1.5 sm:gap-2 group shrink-0">
+            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-rose-300 via-purple-200 to-sky-300 flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+              <span className="text-xs sm:text-sm">🧸</span>
             </span>
-            <span className="font-serif font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-rose-500 via-purple-500 to-sky-600 bg-clip-text text-transparent">
+            <span className="font-serif font-bold text-sm sm:text-base md:text-lg tracking-tight bg-gradient-to-r from-rose-500 via-purple-500 to-sky-600 bg-clip-text text-transparent">
               Estefanía & Carlos
             </span>
           </a>

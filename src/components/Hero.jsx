@@ -60,16 +60,16 @@ export default function Hero({ currentUser, onOpenRegistration }) {
         </p>
 
         {/* Date and Location Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 mb-5 text-xs sm:text-sm font-medium text-slate-700">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-card shadow-sm border border-slate-100">
-            <Calendar className="w-4 h-4 text-purple-500" />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-5 text-xs sm:text-sm font-medium text-slate-700 w-full max-w-md px-2">
+          <div className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl glass-card shadow-sm border border-slate-100">
+            <Calendar className="w-4 h-4 text-purple-500 shrink-0" />
             <span className="font-semibold text-slate-800">{date.displayDate}</span>
             <span className="text-slate-400">•</span>
             <span className="text-slate-600">{date.displayTime}</span>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl glass-card shadow-sm border border-slate-100">
-            <MapPin className="w-4 h-4 text-rose-500" />
+          <div className="w-full sm:w-auto flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl glass-card shadow-sm border border-slate-100">
+            <MapPin className="w-4 h-4 text-rose-500 shrink-0" />
             <span>{location.placeName}</span>
           </div>
         </div>

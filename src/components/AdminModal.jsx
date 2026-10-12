@@ -82,29 +82,29 @@ export default function AdminModal({ isOpen, onClose, guests = [], onGuestsUpdat
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-100">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0">
               👑
             </div>
-            <div>
-              <h2 className="font-bold text-slate-800 text-base">
+            <div className="min-w-0">
+              <h2 className="font-bold text-slate-800 text-sm sm:text-base truncate">
                 Panel de Estefanía y Carlos
               </h2>
-              <p className="text-xs text-slate-500">
-                Lista de Asistencia & Aportes para el 7 de Noviembre
+              <p className="text-[11px] sm:text-xs text-slate-500 truncate">
+                Lista de Asistencia para el 7 de Noviembre
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleExportCSV}
-              className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
               title="Descargar tabla compatible con Excel"
             >
               <FileSpreadsheet className="w-4 h-4" />
-              <span>Exportar Excel (CSV)</span>
+              <span className="hidden xs:inline">Exportar Excel</span>
             </button>
 
             <button
@@ -117,7 +117,7 @@ export default function AdminModal({ isOpen, onClose, guests = [], onGuestsUpdat
         </div>
 
         {/* Metric Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-6 bg-slate-50/50 border-b border-slate-100">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 p-3 sm:p-6 bg-slate-50/50 border-b border-slate-100">
           <div className="p-3 bg-white rounded-2xl border border-slate-200/80 shadow-sm">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
               Total Asistentes

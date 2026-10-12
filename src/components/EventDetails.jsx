@@ -155,8 +155,8 @@ export default function EventDetails() {
         </div>
 
         {/* Itinerario Dinámico y Llamativo */}
-        <div className="glass-card rounded-3xl p-6 sm:p-8 shadow-md border border-white">
-          <div className="text-center mb-8">
+        <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-md border border-white">
+          <div className="text-center mb-6 sm:mb-8">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold uppercase tracking-wider mb-2">
               <Clock className="w-3.5 h-3.5" />
               <span>Cronograma del Día</span>
@@ -170,7 +170,7 @@ export default function EventDetails() {
           </div>
 
           {/* Stepper Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {itinerary.map((item) => {
               const isSelected = activeStep === item.step;
               return (

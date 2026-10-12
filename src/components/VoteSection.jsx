@@ -190,10 +190,10 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
 
         {/* Live Vote Progress Bar */}
         <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-white">
-          <div className="flex justify-between text-xs font-bold text-slate-600 mb-2">
-            <span className="text-sky-600">Team Niño: {boyPercent}%</span>
-            <span className="text-slate-400">Total: {totalVotes} votos registrados</span>
-            <span className="text-rose-600">Team Niña: {girlPercent}%</span>
+          <div className="flex flex-wrap items-center justify-between text-[11px] sm:text-xs font-bold text-slate-600 gap-1 mb-2">
+            <span className="text-sky-600">👦 Niño: {boyPercent}%</span>
+            <span className="text-slate-400 text-[10px] sm:text-xs">Total: {totalVotes} votos</span>
+            <span className="text-rose-600">👧 Niña: {girlPercent}%</span>
           </div>
 
           <div className="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden flex shadow-inner">
