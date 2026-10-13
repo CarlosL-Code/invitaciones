@@ -9,13 +9,13 @@ export const EVENT_CONFIG = {
   // Fecha y Hora del Evento
   date: {
     displayDate: "Sábado 7 de Noviembre de 2026",
-    displayTime: "16:30 hrs",
-    targetDateIso: "2026-11-07T16:30:00", // Para el contador regresivo
+    displayTime: "14:00 hrs",
+    targetDateIso: "2026-11-07T14:00:00", // Para el contador regresivo
     dayOfWeek: "Sábado",
     day: "7",
     month: "Noviembre",
     year: "2026",
-    time: "16:30 hrs",
+    time: "14:00 hrs",
   },
 
   // Ubicación del Evento
@@ -35,34 +35,34 @@ export const EVENT_CONFIG = {
     colorSuggestions: ["#ffffff", "#93c5fd", "#f472b6"],
   },
 
-  // Itinerario dinámico
+  // Itinerario dinámico comenzando a las 14:00 hrs
   itinerary: [
     { 
       step: 1,
-      time: "16:30 hrs", 
+      time: "14:00 hrs", 
       title: "Bienvenida y Recepción", 
-      desc: "Recepción de invitados, fotito de bienvenida y firma del libro de recuerdos.",
+      desc: "Llegada de invitados, bienvenida con cariño y firma del libro de recuerdos.",
       icon: "bear" 
     },
     { 
       step: 2,
-      time: "17:15 hrs", 
+      time: "15:00 hrs", 
       title: "Juegos Dinámicos de Equipos", 
-      desc: "Pruebas y desafíos divertidos entre el Team Niño y el Team Niña.",
+      desc: "Divertidos desafíos y dinámicas entre el Team Niño y el Team Niña.",
       icon: "game" 
     },
     { 
       step: 3,
-      time: "18:15 hrs", 
+      time: "16:30 hrs", 
       title: "¡El Gran Momento: Revelación!", 
-      desc: "La cuenta regresiva final para conocer si será príncipe o princesa.",
+      desc: "La emocionante cuenta regresiva para descubrir si será príncipe o princesa.",
       icon: "sparkles" 
     },
     { 
       step: 4,
-      time: "18:45 hrs", 
+      time: "17:15 hrs", 
       title: "Mesa Dulce & Brindis", 
-      desc: "Compartimos las delicias, queques, abrazos y fotografías familiares.",
+      desc: "Compartimos ricas preparaciones, queques, fotos familiares y abrazos.",
       icon: "cake" 
     },
   ],
@@ -73,12 +73,10 @@ export const EVENT_CONFIG = {
     contactName: "Estefanía y Carlos",
   },
 
-
-
-  // Opciones de Votación Iniciales
+  // Opciones de Votación Iniciales limpias desde cero
   initialVotes: {
-    boy: 28,
-    girl: 32,
+    boy: 0,
+    girl: 0,
   },
 
   // Sincronización en la Nube (Opcional: Google Sheets / SheetDB / Supabase / Make / Webhook)

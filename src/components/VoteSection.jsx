@@ -6,13 +6,7 @@ import { triggerBoyConfetti, triggerGirlConfetti } from '../utils/confetti';
 import { storageService } from '../services/storageService';
 
 export default function VoteSection({ currentUser, userVote, onVoteChange, onRequireRegistration }) {
-  const [votes, setVotes] = useState(() => {
-    const saved = localStorage.getItem('gender_reveal_votes');
-    if (saved) {
-      try { return JSON.parse(saved); } catch {}
-    }
-    return EVENT_CONFIG.initialVotes;
-  });
+  const [votes, setVotes] = useState(() => storageService.getVotes());
 
   useEffect(() => {
     localStorage.setItem('gender_reveal_votes', JSON.stringify(votes));
@@ -89,7 +83,7 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
 
             {/* Boy Teddy Bear */}
             <div className="mb-3 transform group-hover:scale-110 transition-transform">
-              <BoyTeddy className="w-24 h-24 sm:w-28 sm:h-28" />
+              <BoyTeddy className="w-28 h-28 sm:w-36 sm:h-36" />
             </div>
 
             <span className="text-xs font-extrabold uppercase tracking-widest text-sky-600 mb-1">
@@ -145,7 +139,7 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
 
             {/* Girl Teddy Bear */}
             <div className="mb-3 transform group-hover:scale-110 transition-transform">
-              <GirlTeddy className="w-24 h-24 sm:w-28 sm:h-28" />
+              <GirlTeddy className="w-28 h-28 sm:w-36 sm:h-36" />
             </div>
 
             <span className="text-xs font-extrabold uppercase tracking-widest text-rose-600 mb-1">

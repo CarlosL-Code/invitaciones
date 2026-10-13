@@ -1,6 +1,6 @@
 import { Sparkles, Calendar, MapPin, Heart, UserCheck } from 'lucide-react';
 import Countdown from './Countdown';
-import { WelcomeTeddyPair } from './TeddyBears';
+import heroImg from '../assets/hero.png';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { triggerCelebrationConfetti } from '../utils/confetti';
 
@@ -46,13 +46,32 @@ export default function Hero({ currentUser, onOpenRegistration }) {
         </p>
 
         {/* Main Title */}
-        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-800 leading-tight mb-3">
-          ¿Será <span className="text-rose-500 font-serif italic">Niña</span> o será <span className="text-sky-500 font-serif italic">Niño</span>?
+        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-800 leading-tight mb-2">
+          ¿Será <span className="text-rose-500 font-serif italic">Princesa</span> o <span className="text-sky-500 font-serif italic">Príncipe</span>?
         </h1>
 
-        {/* Cute Teddy Bears Graphic */}
-        <div className="my-2 cursor-pointer" onClick={triggerCelebrationConfetti} title="¡Tócame para celebrar!">
-          <WelcomeTeddyPair className="h-32 sm:h-36" />
+        {/* Royal Hero Centerpiece with Baby Prince & Princess */}
+        <div
+          className="my-3 relative group cursor-pointer max-w-xs sm:max-w-md mx-auto"
+          onClick={triggerCelebrationConfetti}
+          title="¡Tócame para celebrar con confeti! ✨"
+        >
+          {/* Subtle dual-color ambient aura */}
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-rose-200/50 via-purple-100/30 to-sky-200/50 rounded-full blur-2xl transform group-hover:scale-110 transition-transform duration-500" />
+          
+          <img
+            src={heroImg}
+            alt="¿Princesa o Príncipe? Revelación de Sexo Estefanía y Carlos"
+            className="w-full max-h-64 sm:max-h-80 object-contain mx-auto drop-shadow-2xl animate-soft-float filter transition-transform duration-300 group-hover:scale-105"
+            loading="eager"
+          />
+
+          <div className="mt-1">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-700 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full border border-purple-200/70 shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Tócame para celebrar</span>
+            </span>
+          </div>
         </div>
 
         <p className="max-w-xl text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-normal">

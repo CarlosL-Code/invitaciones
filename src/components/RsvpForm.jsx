@@ -78,13 +78,16 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
       else triggerCelebrationConfetti();
     }
 
+    // Abrir WhatsApp directamente con los datos capturados
+    handleSendToWhatsapp(newTicketId);
     setSubmitted(true);
   };
 
   // Armar y enviar el mensaje completo formateado a WhatsApp
-  const handleSendToWhatsapp = () => {
+  const handleSendToWhatsapp = (customId) => {
     if (!currentUser) return;
 
+    const refId = customId || ticketId;
     const attendingText = attending === 'yes' ? '✅ ¡Sí asistiré con mucha alegría!' : '❌ Lamentablemente no podré asistir';
     const teamText = userVote === 'boy' ? '👦 Team Niño' : userVote === 'girl' ? '👧 Team Niña' : '✨ Sorpresa';
 
@@ -94,7 +97,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
     if (currentUser.email && currentUser.email !== 'No especificado') {
       msg += `📧 *Correo:* ${currentUser.email}\n`;
     }
-    msg += `🎟️ *Código Pase:* ${ticketId}\n`;
+    msg += `🎟️ *Código Pase:* ${refId}\n`;
     msg += `📅 *Asistencia:* ${attendingText}\n`;
 
     if (attending === 'yes') {
@@ -113,7 +116,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
       msg += `💌 *Dedicatoria para los papás:* "${message.trim()}"\n`;
     }
 
-    msg += `\n¡Nos vemos el Sábado 7 de Noviembre! 🎉✨`;
+    msg += `\n¡Nos vemos el Sábado 7 de Noviembre a las 14:00 hrs! 🎉✨`;
 
     const encoded = encodeURIComponent(msg);
     window.open(`https://wa.me/${whatsapp.phoneNumber}?text=${encoded}`, '_blank');

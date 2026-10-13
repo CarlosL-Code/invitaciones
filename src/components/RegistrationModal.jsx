@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { User, Mail, Phone, Sparkles, Heart } from 'lucide-react';
-import { WelcomeTeddyPair } from './TeddyBears';
+import { RevealTeddy } from './TeddyBears';
 import { triggerCelebrationConfetti } from '../utils/confetti';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { storageService } from '../services/storageService';
@@ -48,9 +48,9 @@ export default function RegistrationModal({ isOpen, onRegister }) {
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-sky-200/50 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-rose-200/50 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Teddy Pair Illustration */}
-        <div className="mb-2">
-          <WelcomeTeddyPair className="h-28 sm:h-32" />
+        {/* Teddy Mascot Illustration */}
+        <div className="mb-2 flex justify-center">
+          <RevealTeddy className="w-24 h-24 sm:w-28 sm:h-28" />
         </div>
 
         {/* Header */}

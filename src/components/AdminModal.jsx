@@ -78,6 +78,16 @@ export default function AdminModal({ isOpen, onClose, guests = [], onGuestsUpdat
     if (onGuestsUpdated) onGuestsUpdated(updated);
   };
 
+  const handleResetAllData = () => {
+    if (!window.confirm('¿Estás seguro de que deseas limpiar todos los datos para comenzar desde cero? Se borrarán todos los registros de prueba y votos.')) return;
+    localStorage.removeItem('gender_reveal_guests');
+    localStorage.removeItem('gender_reveal_votes');
+    localStorage.removeItem('gender_reveal_user_vote');
+    localStorage.removeItem('gender_reveal_user');
+    if (onGuestsUpdated) onGuestsUpdated([]);
+    window.location.reload();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-100">
@@ -263,8 +273,17 @@ export default function AdminModal({ isOpen, onClose, guests = [], onGuestsUpdat
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span>Datos guardados en tu navegador listos para exportar.</span>
+        <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+          <button
+            type="button"
+            onClick={handleResetAllData}
+            className="px-3 py-2 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold flex items-center gap-1.5 transition-colors"
+            title="Borra todos los votos e invitados de prueba para empezar limpio"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Limpiar todo para empezar desde cero</span>
+          </button>
+
           <button
             onClick={onClose}
             className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition-colors"

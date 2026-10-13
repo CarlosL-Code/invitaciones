@@ -17,7 +17,7 @@ export default function EventDetails() {
     const title = encodeURIComponent("Gran Revelación de Sexo - Estefanía y Carlos");
     const details = encodeURIComponent("Acompáñanos a descubrir si será Niño o Niña. ¡Te esperamos!");
     const loc = encodeURIComponent(`${location.placeName}, ${location.address}`);
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261107T193000Z/20261108T000000Z&details=${details}&location=${loc}`;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261107T170000Z/20261107T220000Z&details=${details}&location=${loc}`;
   };
 
   return (
