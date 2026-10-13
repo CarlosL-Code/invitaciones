@@ -91,6 +91,6 @@ export const EVENT_CONFIG = {
   // Sincronización en la Nube (Google Sheets Web App / SheetDB / Supabase / REST API)
   cloudSync: {
     enabled: true,
-    endpointUrl: import.meta.env.VITE_CLOUD_URL || "", // Pega aquí tu URL de Google Apps Script (/exec) o configúrala en VITE_CLOUD_URL
+    endpointUrl: import.meta.env.VITE_CLOUD_URL || "https://script.google.com/macros/s/AKfycbwn22Iww21mv2qTfZiF-X9lzoAfa2jx_REhDjXkQS3G3FNjKUlFM7DLd6G4qJ28jYQ6/exec",
   },
 };
