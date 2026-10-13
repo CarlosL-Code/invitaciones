@@ -73,10 +73,19 @@ export const EVENT_CONFIG = {
     contactName: "Estefanía y Carlos",
   },
 
+  // PIN de seguridad para el Panel Administrativo de Papás
+  adminPin: "711", // PIN seguro (7 de Noviembre = 711)
+
   // Opciones de Votación Iniciales limpias desde cero
   initialVotes: {
     boy: 0,
     girl: 0,
+  },
+
+  // API Opcional de WhatsApp (Ej: CallMeBot API gratuita para recibir alertas en segundo plano)
+  whatsappApi: {
+    enabled: false,
+    apiKey: "", // Tu API Key gratuita de CallMeBot (opcional)
   },
 
   // Sincronización en la Nube (Opcional: Google Sheets / SheetDB / Supabase / Make / Webhook)

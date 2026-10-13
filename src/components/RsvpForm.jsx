@@ -72,22 +72,33 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
       onGuestAdded(guestRecord);
     }
 
+    const formattedMsg = buildWhatsappMessage(newTicketId);
+
+    // Guardar mediante el servicio de almacenamiento (y API si está configurada)
+    await storageService.saveGuest(guestRecord, formattedMsg);
+
+    if (onGuestAdded) {
+      onGuestAdded(guestRecord);
+    }
+
     if (attending === 'yes') {
       if (userVote === 'boy') triggerBoyConfetti();
       else if (userVote === 'girl') triggerGirlConfetti();
       else triggerCelebrationConfetti();
     }
 
-    // Abrir WhatsApp directamente con los datos capturados
-    handleSendToWhatsapp(newTicketId);
     setSubmitted(true);
+
+    // Enviar de una sola vez directo a WhatsApp sin pedir un segundo clic
+    const encoded = encodeURIComponent(formattedMsg);
+    window.location.href = `https://wa.me/${whatsapp.phoneNumber}?text=${encoded}`;
   };
 
-  // Armar y enviar el mensaje completo formateado a WhatsApp
-  const handleSendToWhatsapp = (customId) => {
-    if (!currentUser) return;
+  // Armar el mensaje completo formateado para WhatsApp
+  const buildWhatsappMessage = (refId) => {
+    if (!currentUser) return '';
 
-    const refId = customId || ticketId;
+    const id = refId || ticketId;
     const attendingText = attending === 'yes' ? '✅ ¡Sí asistiré con mucha alegría!' : '❌ Lamentablemente no podré asistir';
     const teamText = userVote === 'boy' ? '👦 Team Niño' : userVote === 'girl' ? '👧 Team Niña' : '✨ Sorpresa';
 
@@ -97,7 +108,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
     if (currentUser.email && currentUser.email !== 'No especificado') {
       msg += `📧 *Correo:* ${currentUser.email}\n`;
     }
-    msg += `🎟️ *Código Pase:* ${refId}\n`;
+    msg += `🎟️ *Código Pase:* ${id}\n`;
     msg += `📅 *Asistencia:* ${attendingText}\n`;
 
     if (attending === 'yes') {
@@ -117,9 +128,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
     }
 
     msg += `\n¡Nos vemos el Sábado 7 de Noviembre a las 14:00 hrs! 🎉✨`;
-
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/${whatsapp.phoneNumber}?text=${encoded}`, '_blank');
+    return msg;
   };
 
   return (
@@ -157,14 +166,14 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
         )}
 
         {currentUser && submitted && (
-          /* Card de Éxito con Pase Digital */
+          /* Card de Éxito con Pase Digital si vuelve a la pantalla */
           <div className="glass-card rounded-3xl p-6 sm:p-8 shadow-xl border border-white text-center animate-in fade-in zoom-in-95 duration-300">
             <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <span className="text-xs uppercase tracking-widest font-bold text-emerald-600 mb-1 block">
-              ¡Confirmación Guardada!
+              ¡Confirmación Enviada Directamente!
             </span>
             <h3 className="font-serif text-2xl font-bold text-slate-800 mb-2">
               Muchas gracias, {currentUser.fullName}
@@ -172,7 +181,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
 
             <p className="text-xs sm:text-sm text-slate-600 mb-6">
               {attending === 'yes'
-                ? '¡Tus lugares han quedado registrados! Ahora presiona el botón para enviar los datos al WhatsApp de Estefanía y Carlos.'
+                ? '¡Tu confirmación y dedicatoria fueron enviadas a los papás por WhatsApp!'
                 : 'Agradecemos de corazón tu aviso y tus palabras con cariño.'}
             </p>
 
@@ -222,23 +231,22 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
               </div>
             )}
 
-            {/* Botón para enviar datos al WhatsApp del organizador */}
-            <div className="flex flex-col gap-3">
-              <button
-                type="button"
-                onClick={handleSendToWhatsapp}
-                className="w-full py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25"
+            {/* Acciones */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href={`https://wa.me/${whatsapp.phoneNumber}?text=${encodeURIComponent(buildWhatsappMessage(ticketId))}`}
+                className="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-4 py-2.5 rounded-xl transition-colors inline-flex items-center gap-2"
               >
-                <MessageCircle className="w-5 h-5" />
-                <span>Enviar confirmación al WhatsApp de Estefanía y Carlos</span>
-              </button>
+                <MessageCircle className="w-4 h-4" />
+                <span>¿No se abrió WhatsApp? Pulsa aquí</span>
+              </a>
 
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
                 className="py-2.5 px-4 text-xs text-slate-500 hover:text-slate-800 transition-colors"
               >
-                Modificar o registrar otra respuesta
+                Modificar mi respuesta
               </button>
             </div>
           </div>

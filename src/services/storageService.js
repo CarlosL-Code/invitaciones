@@ -30,6 +30,13 @@ export const storageService = {
   // --- VOTOS ---
   getVotes() {
     try {
+      const isCleaned = localStorage.getItem('gender_reveal_clean_zero_v1');
+      if (!isCleaned) {
+        // Asegura que las pruebas previas queden en 0 limpio
+        localStorage.setItem(KEYS.VOTES, JSON.stringify({ boy: 0, girl: 0 }));
+        localStorage.setItem('gender_reveal_clean_zero_v1', 'true');
+        return { boy: 0, girl: 0 };
+      }
       const saved = localStorage.getItem(KEYS.VOTES);
       return saved ? JSON.parse(saved) : EVENT_CONFIG.initialVotes;
     } catch {
@@ -71,13 +78,18 @@ export const storageService = {
     }
   },
 
-  async saveGuest(guest) {
+  async saveGuest(guest, formattedMessage = '') {
     const existing = this.getGuests();
     // Reemplaza si ya existía por teléfono o ID, o agrega al inicio
     const filtered = existing.filter((g) => g.phone !== guest.phone && g.id !== guest.id);
     const updated = [guest, ...filtered];
 
     localStorage.setItem(KEYS.GUESTS, JSON.stringify(updated));
+
+    // Si hay un mensaje y API key de WhatsApp (CallMeBot) configurada
+    if (formattedMessage) {
+      this.sendWhatsappViaApi(formattedMessage);
+    }
 
     // Si hay un endpoint remoto configurado (Google Sheets / Supabase / Webhook)
     if (EVENT_CONFIG.cloudSync && EVENT_CONFIG.cloudSync.endpointUrl) {
@@ -92,6 +104,24 @@ export const storageService = {
     const updated = existing.filter((g) => g.id !== id);
     localStorage.setItem(KEYS.GUESTS, JSON.stringify(updated));
     return updated;
+  },
+
+  // --- API DE WHATSAPP GRATUITA EN SEGUNDO PLANO (CallMeBot) ---
+  async sendWhatsappViaApi(message) {
+    try {
+      const apiKey = localStorage.getItem('callmebot_api_key') || (EVENT_CONFIG.whatsappApi && EVENT_CONFIG.whatsappApi.apiKey);
+      const phone = EVENT_CONFIG.whatsapp.phoneNumber;
+      if (!apiKey || !apiKey.trim()) return;
+
+      const encoded = encodeURIComponent(message);
+      const url = `https://api.callmebot.com/whatsapp.php?phone=+${phone}&text=${encoded}&apikey=${apiKey.trim()}`;
+      
+      // Enviamos la petición en segundo plano
+      await fetch(url, { mode: 'no-cors' });
+      console.log('Mensaje de confirmación despachado exitosamente mediante WhatsApp API');
+    } catch (err) {
+      console.warn('WhatsApp API warning:', err);
+    }
   },
 
   // --- SINCRONIZACIÓN EN LA NUBE ---

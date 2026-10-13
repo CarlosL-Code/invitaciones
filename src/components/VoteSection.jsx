@@ -43,8 +43,8 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
   };
 
   const totalVotes = votes.boy + votes.girl;
-  const boyPercent = totalVotes > 0 ? Math.round((votes.boy / totalVotes) * 100) : 50;
-  const girlPercent = totalVotes > 0 ? 100 - boyPercent : 50;
+  const boyPercent = totalVotes > 0 ? Math.round((votes.boy / totalVotes) * 100) : 0;
+  const girlPercent = totalVotes > 0 ? 100 - boyPercent : 0;
 
   return (
     <section id="votacion" className="py-16 px-4 sm:px-6 relative">
@@ -100,7 +100,9 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
               <span className="text-3xl font-extrabold text-sky-600">
                 {votes.boy}
               </span>
-              <span className="text-xs text-slate-500 font-medium">votos ({boyPercent}%)</span>
+              <span className="text-xs text-slate-500 font-medium">
+                {totalVotes > 0 ? `votos (${boyPercent}%)` : 'votos'}
+              </span>
             </div>
 
             <button
@@ -156,7 +158,9 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
               <span className="text-3xl font-extrabold text-rose-600">
                 {votes.girl}
               </span>
-              <span className="text-xs text-slate-500 font-medium">votos ({girlPercent}%)</span>
+              <span className="text-xs text-slate-500 font-medium">
+                {totalVotes > 0 ? `votos (${girlPercent}%)` : 'votos'}
+              </span>
             </div>
 
             <button
@@ -186,23 +190,35 @@ export default function VoteSection({ currentUser, userVote, onVoteChange, onReq
         <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-white">
           <div className="flex flex-wrap items-center justify-between text-[11px] sm:text-xs font-bold text-slate-600 gap-1 mb-2">
             <span className="text-sky-600">👦 Niño: {boyPercent}%</span>
-            <span className="text-slate-400 text-[10px] sm:text-xs">Total: {totalVotes} votos</span>
+            <span className="text-slate-400 text-[10px] sm:text-xs">
+              {totalVotes === 0 ? 'Sin votos registrados aún (0 votos)' : `Total: ${totalVotes} votos`}
+            </span>
             <span className="text-rose-600">👧 Niña: {girlPercent}%</span>
           </div>
 
           <div className="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden flex shadow-inner">
-            <div
-              className="bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-700 h-full rounded-l-full"
-              style={{ width: `${boyPercent}%` }}
-            />
-            <div
-              className="bg-gradient-to-r from-pink-400 to-rose-500 transition-all duration-700 h-full rounded-r-full"
-              style={{ width: `${girlPercent}%` }}
-            />
+            {totalVotes === 0 ? (
+              <div className="w-full h-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-400 font-semibold">
+                Esperando primeras predicciones
+              </div>
+            ) : (
+              <>
+                <div
+                  className="bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-700 h-full rounded-l-full"
+                  style={{ width: `${boyPercent}%` }}
+                />
+                <div
+                  className="bg-gradient-to-r from-pink-400 to-rose-500 transition-all duration-700 h-full rounded-r-full"
+                  style={{ width: `${girlPercent}%` }}
+                />
+              </>
+            )}
           </div>
 
           <p className="text-center text-xs text-slate-500 mt-3">
-            {userVote
+            {totalVotes === 0
+              ? '✨ ¡Aún no hay votos registrados! Haz clic en el osito de tu preferencia para iniciar la predicción.'
+              : userVote
               ? '✨ Tu voto ya quedó registrado y se adjuntará automáticamente a tu confirmación.'
               : 'Haz clic sobre el osito de tu preferencia para emitir tu predicción.'}
           </p>
