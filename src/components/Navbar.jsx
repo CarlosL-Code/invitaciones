@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Heart, Menu, X, User } from 'lucide-react';
 import { musicBox } from '../utils/audioPlayer';
 
 export default function Navbar({ currentUser, onOpenRegistration }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Autoarranque de música al primer gesto del usuario
+  useEffect(() => {
+    musicBox.setupAutoStart();
+
+    // Detectar cuando la música arranca automáticamente
+    const checkPlaying = setInterval(() => {
+      if (musicBox.isPlaying && !isPlaying) {
+        setIsPlaying(true);
+      }
+    }, 500);
+
+    return () => clearInterval(checkPlaying);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleMusic = () => {
     const active = musicBox.toggle();
