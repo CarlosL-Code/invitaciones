@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, CheckCircle2, User, Phone, Users, Heart, Sparkles, MessageCircle, AlertCircle, Plus, Trash2, Utensils } from 'lucide-react';
+import { Send, CheckCircle2, User, Phone, Users, Heart, Sparkles, MessageCircle, AlertCircle, Plus, Trash2, Utensils, Gift } from 'lucide-react';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { triggerCelebrationConfetti, triggerBoyConfetti, triggerGirlConfetti } from '../utils/confetti';
 import { storageService } from '../services/storageService';
@@ -12,6 +12,7 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
   const [childrenCount, setChildrenCount] = useState(0);
   const [companions, setCompanions] = useState([]); // Lista dinámica de acompañantes
   const [dietary, setDietary] = useState('');
+  const [contribution, setContribution] = useState('');
   const [message, setMessage] = useState('');
 
   const [submitted, setSubmitted] = useState(false);
@@ -61,20 +62,14 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
       companions: cleanCompanions,
       teamVote: userVote || 'boy',
       dietary: dietary.trim(),
+      contribution: contribution.trim(),
       message: message.trim(),
       createdAt: new Date().toISOString(),
     };
 
-    // Guardar mediante el servicio de almacenamiento y sincronización
-    await storageService.saveGuest(guestRecord);
-
-    if (onGuestAdded) {
-      onGuestAdded(guestRecord);
-    }
-
     const formattedMsg = buildWhatsappMessage(newTicketId);
 
-    // Guardar mediante el servicio de almacenamiento (y API si está configurada)
+    // Guardar mediante el servicio de almacenamiento y sincronización (nube y local)
     await storageService.saveGuest(guestRecord, formattedMsg);
 
     if (onGuestAdded) {
@@ -120,6 +115,9 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
       msg += `🎯 *Mi Predicción:* ${teamText}\n`;
       if (dietary.trim()) {
         msg += `🥗 *Restricción alimentaria / Alergias:* ${dietary.trim()}\n`;
+      }
+      if (contribution.trim()) {
+        msg += `🎁 *Aporte Voluntario (Comida/Adornos):* ${contribution.trim()}\n`;
       }
     }
 
@@ -225,6 +223,15 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
                     <span className="text-slate-400 block">Acompañantes:</span>
                     <span className="text-slate-700 font-medium">
                       {companions.filter(c => c.trim()).join(', ')}
+                    </span>
+                  </div>
+                )}
+
+                {contribution.trim() && (
+                  <div className="mt-3 pt-2 border-t border-slate-200/60 text-xs">
+                    <span className="text-slate-400 block">Aporte Voluntario:</span>
+                    <span className="text-amber-800 font-medium flex items-center gap-1">
+                      <span>🎁</span> {contribution.trim()}
                     </span>
                   </div>
                 )}
@@ -421,6 +428,57 @@ export default function RsvpForm({ currentUser, userVote, onVoteChange, onGuestA
                     onChange={(e) => setDietary(e.target.value)}
                     placeholder="Ej: Vegetariano, celíaco, alergia a nueces o lácteos..."
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 focus:border-purple-400 text-sm outline-none transition-all"
+                  />
+                </div>
+
+                {/* Aporte Voluntario (Comida o Adornos - 100% Voluntario) */}
+                <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200">
+                  <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                      <Gift className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Aporte Voluntario: Comida o Adornos (Opcional)</span>
+                    </label>
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100/90 px-2 py-0.5 rounded-full border border-amber-300">
+                      100% Voluntario
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-600 mb-2.5 leading-relaxed">
+                    Tu cariño y presencia son lo más importante. Si deseas colaborar con algo para compartir (un queque, bocaditos, bebida) o algún adorno para decorar, anótalo aquí:
+                  </p>
+
+                  {/* Sugerencias rápidas */}
+                  <div className="flex flex-wrap gap-1.5 mb-2.5">
+                    {[
+                      '🍰 Queque casero',
+                      '🧁 Bocaditos dulces',
+                      '🥪 Bocaditos salados',
+                      '🥤 Bebida / Jugo',
+                      '🎈 Globos / Guirnaldas',
+                      '🎀 Servilletas / Adornos',
+                    ].map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        type="button"
+                        onClick={() => {
+                          const clean = suggestion.split(' ').slice(1).join(' ');
+                          if (!contribution.includes(clean)) {
+                            setContribution((prev) => prev ? `${prev}, ${clean}` : clean);
+                          }
+                        }}
+                        className="text-[10px] sm:text-[11px] font-medium bg-white hover:bg-amber-100 text-slate-700 px-2.5 py-1 rounded-lg border border-amber-200 transition-colors shadow-2xs cursor-pointer"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+
+                  <input
+                    type="text"
+                    value={contribution}
+                    onChange={(e) => setContribution(e.target.value)}
+                    placeholder="Ej: Llevaré un queque de naranja y una bebida, o adornos..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-amber-200 text-slate-800 focus:border-amber-400 text-xs sm:text-sm outline-none transition-all"
                   />
                 </div>
               </div>

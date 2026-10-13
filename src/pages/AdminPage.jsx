@@ -116,6 +116,7 @@ export default function AdminPage({ onBackToInvitation }) {
       'Acompañantes',
       'Predicción Team',
       'Restricción Alimentaria',
+      'Aporte Voluntario',
       'Dedicatoria',
       'Fecha Registro',
     ];
@@ -133,6 +134,7 @@ export default function AdminPage({ onBackToInvitation }) {
         `"${compStr.replace(/"/g, '""')}"`,
         `"${g.teamVote === 'boy' ? 'Niño' : 'Niña'}"`,
         `"${(g.dietary || 'Ninguna').replace(/"/g, '""')}"`,
+        `"${(g.contribution || 'Ninguno').replace(/"/g, '""')}"`,
         `"${(g.message || '').replace(/"/g, '""')}"`,
         `"${g.createdAt ? new Date(g.createdAt).toLocaleDateString() : ''}"`,
       ];
@@ -602,6 +604,13 @@ export default function AdminPage({ onBackToInvitation }) {
                       {g.dietary && (
                         <p className="text-amber-300 text-[11px]">
                           🥗 Restricción/Alergia: {g.dietary}
+                        </p>
+                      )}
+
+                      {g.contribution && (
+                        <p className="text-emerald-300 font-medium text-[11px] flex items-center gap-1">
+                          <span>🎁 Aporte Voluntario:</span>
+                          <strong className="text-slate-100">{g.contribution}</strong>
                         </p>
                       )}
 

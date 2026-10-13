@@ -39,7 +39,7 @@ function doGet(e) {
     var sheetGuests = getOrCreateSheet(ss, "Invitados", [
       "ID Pase", "Nombre Completo", "WhatsApp", "Correo", 
       "¿Asiste?", "Adultos", "Niños", "Acompañantes", 
-      "Predicción", "Restricción / Alergia", "Dedicatoria", "Fecha"
+      "Predicción", "Restricción / Alergia", "Aporte Voluntario", "Dedicatoria", "Fecha"
     ]);
 
     // Leer Votos
@@ -53,12 +53,14 @@ function doGet(e) {
     // Leer Invitados
     var guestList = [];
     var lastRow = sheetGuests.getLastRow();
+    var lastCol = Math.max(12, sheetGuests.getLastColumn());
     if (lastRow > 1) {
-      var rows = sheetGuests.getRange(2, 1, lastRow - 1, 12).getValues();
+      var rows = sheetGuests.getRange(2, 1, lastRow - 1, lastCol).getValues();
       for (var i = 0; i < rows.length; i++) {
         var r = rows[i];
         if (r[0]) {
           var companions = r[7] ? String(r[7]).split(', ') : [];
+          var hasContribCol = lastCol >= 13;
           guestList.push({
             id: String(r[0]),
             fullName: String(r[1] || ''),
@@ -70,8 +72,9 @@ function doGet(e) {
             companions: companions,
             teamVote: String(r[8] || 'boy'),
             dietary: String(r[9] || ''),
-            message: String(r[10] || ''),
-            createdAt: r[11] ? new Date(r[11]).toISOString() : new Date().toISOString()
+            contribution: hasContribCol ? String(r[10] || '') : '',
+            message: hasContribCol ? String(r[11] || '') : String(r[10] || ''),
+            createdAt: (hasContribCol && r[12]) ? new Date(r[12]).toISOString() : (r[11] ? new Date(r[11]).toISOString() : new Date().toISOString())
           });
         }
       }
@@ -138,7 +141,7 @@ function doPost(e) {
       var sheetGuests = getOrCreateSheet(ss, "Invitados", [
         "ID Pase", "Nombre Completo", "WhatsApp", "Correo", 
         "¿Asiste?", "Adultos", "Niños", "Acompañantes", 
-        "Predicción", "Restricción / Alergia", "Dedicatoria", "Fecha"
+        "Predicción", "Restricción / Alergia", "Aporte Voluntario", "Dedicatoria", "Fecha"
       ]);
 
       var companionsStr = Array.isArray(g.companions) ? g.companions.join(', ') : (g.companions || '');
@@ -153,6 +156,7 @@ function doPost(e) {
         companionsStr,
         g.teamVote || 'boy',
         g.dietary || '',
+        g.contribution || '',
         g.message || '',
         new Date().toISOString()
       ];
@@ -171,7 +175,7 @@ function doPost(e) {
       }
 
       if (foundRow > 0) {
-        sheetGuests.getRange(foundRow, 1, 1, 12).setValues([newRow]);
+        sheetGuests.getRange(foundRow, 1, 1, newRow.length).setValues([newRow]);
       } else {
         sheetGuests.appendRow(newRow);
       }

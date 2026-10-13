@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import VoteSection from './components/VoteSection';
 import EventDetails from './components/EventDetails';
+import GiftSection from './components/GiftSection';
 import RsvpForm from './components/RsvpForm';
 import WishesWall from './components/WishesWall';
 import Footer from './components/Footer';
@@ -127,6 +128,8 @@ export default function App() {
         />
 
         <EventDetails />
+
+        <GiftSection />
 
         <RsvpForm
           currentUser={currentUser}

@@ -21,6 +21,7 @@ export default function Navbar({ currentUser, onOpenRegistration }) {
     { name: 'Inicio', href: '#inicio' },
     { name: '¿Niño o Niña?', href: '#votacion' },
     { name: 'Detalles', href: '#detalles' },
+    { name: 'Aportes', href: '#regalo' },
     { name: 'Confirmar', href: '#asistencia' },
   ];
 
