@@ -88,9 +88,9 @@ export const EVENT_CONFIG = {
     apiKey: "", // Tu API Key gratuita de CallMeBot (opcional)
   },
 
-  // Sincronización en la Nube (Opcional: Google Sheets / SheetDB / Supabase / Make / Webhook)
+  // Sincronización en la Nube (Google Sheets Web App / SheetDB / Supabase / REST API)
   cloudSync: {
-    enabled: false,
-    endpointUrl: "", // URL opcional para recibir confirmaciones directamente en una hoja de Google Sheets o base de datos
+    enabled: true,
+    endpointUrl: import.meta.env.VITE_CLOUD_URL || "", // Pega aquí tu URL de Google Apps Script (/exec) o configúrala en VITE_CLOUD_URL
   },
 };

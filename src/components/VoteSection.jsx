@@ -5,8 +5,17 @@ import { EVENT_CONFIG } from '../config/eventConfig';
 import { triggerBoyConfetti, triggerGirlConfetti } from '../utils/confetti';
 import { storageService } from '../services/storageService';
 
-export default function VoteSection({ currentUser, userVote, onVoteChange, onRequireRegistration }) {
-  const [votes, setVotes] = useState(() => storageService.getVotes());
+export default function VoteSection({ 
+  currentUser, 
+  userVote, 
+  onVoteChange, 
+  onRequireRegistration,
+  votes: externalVotes,
+  onVotesUpdated 
+}) {
+  const [internalVotes, setInternalVotes] = useState(() => storageService.getVotes());
+  const votes = externalVotes || internalVotes;
+  const setVotes = onVotesUpdated || setInternalVotes;
 
   useEffect(() => {
     localStorage.setItem('gender_reveal_votes', JSON.stringify(votes));

@@ -28,8 +28,30 @@ export default function App() {
   // Voto del usuario (Team Niño / Team Niña)
   const [userVote, setUserVote] = useState(() => storageService.getUserVote());
 
+  // Conteo de votos compartido en la nube
+  const [votes, setVotes] = useState(() => storageService.getVotes());
+
   // Lista de invitados que han confirmado RSVP
   const [guests, setGuests] = useState(() => storageService.getGuests());
+
+  // Sincronización en tiempo real desde la nube (Google Sheets / REST API)
+  useEffect(() => {
+    const syncCloud = async () => {
+      const cloudData = await storageService.fetchCloudData();
+      if (cloudData) {
+        if (cloudData.votes) {
+          setVotes(cloudData.votes);
+        }
+        if (Array.isArray(cloudData.guests)) {
+          setGuests(cloudData.guests);
+        }
+      }
+    };
+
+    syncCloud();
+    const interval = setInterval(syncCloud, 15000); // Polling suave cada 15s para sincronizar en vivo entre distintos celulares
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleLocationChange = () => {
@@ -98,6 +120,8 @@ export default function App() {
         <VoteSection
           currentUser={currentUser}
           userVote={userVote}
+          votes={votes}
+          onVotesUpdated={setVotes}
           onVoteChange={handleVoteChange}
           onRequireRegistration={() => setIsRegistrationOpen(true)}
         />

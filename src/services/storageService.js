@@ -1,7 +1,7 @@
 /**
  * Storage Service & Cloud Persistence Layer
- * Soporta almacenamiento local-first con capacidad de sincronización en la nube
- * (Google Sheets / Supabase / REST Webhook / LocalStorage)
+ * Soporta almacenamiento local-first con sincronización automática en la nube
+ * Compatible con Google Sheets (Google Apps Script), Supabase y REST APIs.
  */
 import { EVENT_CONFIG } from '../config/eventConfig';
 
@@ -10,9 +10,49 @@ const KEYS = {
   VOTES: 'gender_reveal_votes',
   USER_VOTE: 'gender_reveal_user_vote',
   GUESTS: 'gender_reveal_guests',
+  CLOUD_URL: 'cloud_sync_url',
 };
 
 export const storageService = {
+  // --- ENDPOINT EN LA NUBE ---
+  getCloudUrl() {
+    return localStorage.getItem(KEYS.CLOUD_URL) || EVENT_CONFIG.cloudSync?.endpointUrl || '';
+  },
+
+  setCloudUrl(url) {
+    if (url && url.trim()) {
+      localStorage.setItem(KEYS.CLOUD_URL, url.trim());
+    } else {
+      localStorage.removeItem(KEYS.CLOUD_URL);
+    }
+  },
+
+  // --- OBTENER DATOS COMPARTIDOS DESDE LA NUBE ---
+  async fetchCloudData() {
+    const url = this.getCloudUrl();
+    if (!url) return null;
+
+    try {
+      const response = await fetch(url, { redirect: 'follow' });
+      if (!response.ok) return null;
+      const data = await response.json();
+
+      if (data && data.status === 'success') {
+        if (data.votes) {
+          localStorage.setItem(KEYS.VOTES, JSON.stringify(data.votes));
+        }
+        if (Array.isArray(data.guests)) {
+          localStorage.setItem(KEYS.GUESTS, JSON.stringify(data.guests));
+        }
+        return data;
+      }
+      return null;
+    } catch (err) {
+      console.warn('Aviso sincronización en la nube:', err);
+      return null;
+    }
+  },
+
   // --- USUARIO ACTUAL ---
   getUser() {
     try {
@@ -32,7 +72,6 @@ export const storageService = {
     try {
       const isCleaned = localStorage.getItem('gender_reveal_clean_zero_v1');
       if (!isCleaned) {
-        // Asegura que las pruebas previas queden en 0 limpio
         localStorage.setItem(KEYS.VOTES, JSON.stringify({ boy: 0, girl: 0 }));
         localStorage.setItem('gender_reveal_clean_zero_v1', 'true');
         return { boy: 0, girl: 0 };
@@ -60,10 +99,8 @@ export const storageService = {
     localStorage.setItem(KEYS.VOTES, JSON.stringify(newVotes));
     localStorage.setItem(KEYS.USER_VOTE, team);
 
-    // Si hay un endpoint remoto configurado (Google Sheets / Supabase / Webhook)
-    if (EVENT_CONFIG.cloudSync && EVENT_CONFIG.cloudSync.endpointUrl) {
-      this.syncVoteToCloud(team, newVotes);
-    }
+    // Sincronizar voto a la nube inmediatamente
+    this.syncVoteToCloud(team, previousVote);
 
     return newVotes;
   },
@@ -91,10 +128,8 @@ export const storageService = {
       this.sendWhatsappViaApi(formattedMessage);
     }
 
-    // Si hay un endpoint remoto configurado (Google Sheets / Supabase / Webhook)
-    if (EVENT_CONFIG.cloudSync && EVENT_CONFIG.cloudSync.endpointUrl) {
-      await this.syncGuestToCloud(guest);
-    }
+    // Sincronizar invitado a la base de datos en la nube
+    await this.syncGuestToCloud(guest);
 
     return updated;
   },
@@ -116,56 +151,70 @@ export const storageService = {
       const encoded = encodeURIComponent(message);
       const url = `https://api.callmebot.com/whatsapp.php?phone=+${phone}&text=${encoded}&apikey=${apiKey.trim()}`;
       
-      // Enviamos la petición en segundo plano
       await fetch(url, { mode: 'no-cors' });
-      console.log('Mensaje de confirmación despachado exitosamente mediante WhatsApp API');
+      console.log('Mensaje de confirmación despachado mediante WhatsApp API');
     } catch (err) {
       console.warn('WhatsApp API warning:', err);
     }
   },
 
-  // --- SINCRONIZACIÓN EN LA NUBE ---
+  // --- SINCRONIZACIÓN EN LA NUBE (Google Sheets / REST) ---
   async syncGuestToCloud(guest) {
-    try {
-      const url = EVENT_CONFIG.cloudSync.endpointUrl;
-      if (!url) return;
+    const url = this.getCloudUrl();
+    if (!url) return;
 
+    try {
       await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
-          action: 'rsvp_submission',
-          data: guest,
+          action: 'rsvp',
+          guest: guest,
           timestamp: new Date().toISOString(),
         }),
       });
     } catch (err) {
-      console.warn('No se pudo sincronizar en la nube de forma transparente:', err);
-      // Falla silenciosa: la confirmación por WhatsApp y almacenamiento local garantizan 100% entrega
+      console.warn('Aviso guardando invitado en la nube:', err);
     }
   },
 
-  async syncVoteToCloud(team, votes) {
-    try {
-      const url = EVENT_CONFIG.cloudSync.endpointUrl;
-      if (!url) return;
+  async syncVoteToCloud(team, previousVote) {
+    const url = this.getCloudUrl();
+    if (!url) return;
 
+    try {
       await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
-          action: 'vote_submission',
+          action: 'vote',
           team,
-          votes,
+          previousVote,
           timestamp: new Date().toISOString(),
         }),
       });
     } catch (err) {
-      console.warn('Sync vote warning:', err);
+      console.warn('Aviso guardando voto en la nube:', err);
+    }
+  },
+
+  async resetCloudData() {
+    const url = this.getCloudUrl();
+    if (!url) return;
+
+    try {
+      await fetch(url, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'reset_all',
+        }),
+      });
+    } catch (err) {
+      console.warn('Aviso reiniciando nube:', err);
     }
   },
 };

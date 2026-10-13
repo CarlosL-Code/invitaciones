@@ -21,13 +21,40 @@ export default function AdminPage({ onBackToInvitation }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all'); // 'all', 'attending', 'not_attending'
 
-  // Configuración de API WhatsApp y Cambio de PIN
+  // Configuración de API WhatsApp, Cloud Sync y Cambio de PIN
   const [showSettings, setShowSettings] = useState(false);
+  const [cloudUrlInput, setCloudUrlInput] = useState(() => storageService.getCloudUrl());
   const [apiKeyInput, setApiKeyInput] = useState(() => {
     return localStorage.getItem('callmebot_api_key') || (EVENT_CONFIG.whatsappApi?.apiKey || '');
   });
   const [newPinInput, setNewPinInput] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+
+  // Sincronización manual bajo demanda
+  const handleManualSync = async () => {
+    setStatusMessage('Sincronizando con la nube...');
+    const data = await storageService.fetchCloudData();
+    if (data) {
+      if (Array.isArray(data.guests)) setGuests(data.guests);
+      setStatusMessage(`✅ Sincronización exitosa: ${data.guests?.length || 0} invitados y votos actualizados.`);
+    } else {
+      setStatusMessage('ℹ️ No hay URL en la nube configurada o no respondió.');
+    }
+    setTimeout(() => setStatusMessage(''), 5000);
+  };
+
+  const handleSaveCloudUrl = async () => {
+    storageService.setCloudUrl(cloudUrlInput);
+    setStatusMessage('Guardando URL y probando conexión...');
+    const data = await storageService.fetchCloudData();
+    if (data) {
+      if (Array.isArray(data.guests)) setGuests(data.guests);
+      setStatusMessage('✅ ¡Conectado exitosamente con la Base de Datos en la Nube!');
+    } else {
+      setStatusMessage('✅ URL guardada. Asegúrate de que la aplicación web tenga acceso "Cualquier usuario".');
+    }
+    setTimeout(() => setStatusMessage(''), 5000);
+  };
 
   // Obtener el PIN activo (del storage o del config)
   const getActivePin = () => {
@@ -128,14 +155,15 @@ export default function AdminPage({ onBackToInvitation }) {
     setGuests(updated);
   };
 
-  const handleResetAllData = () => {
-    if (!window.confirm('⚠️ ¿Estás seguro de que deseas limpiar TODOS los datos para comenzar desde cero? Se borrarán todos los invitados registrados y los votos de prueba.')) return;
+  const handleResetAllData = async () => {
+    if (!window.confirm('⚠️ ¿Estás seguro de que deseas limpiar TODOS los datos para comenzar desde cero? Se borrarán todos los invitados registrados y los votos de prueba tanto localmente como en la nube.')) return;
     localStorage.removeItem('gender_reveal_guests');
     localStorage.removeItem('gender_reveal_votes');
     localStorage.removeItem('gender_reveal_user_vote');
     localStorage.removeItem('gender_reveal_user');
+    await storageService.resetCloudData();
     setGuests([]);
-    alert('Todos los datos han sido reiniciados a cero.');
+    alert('Todos los datos han sido reiniciados a cero exitosamente.');
     window.location.reload();
   };
 
@@ -275,6 +303,15 @@ export default function AdminPage({ onBackToInvitation }) {
               </button>
 
               <button
+                onClick={handleManualSync}
+                className="px-3 py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-500/40 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                title="Actualizar votos e invitados desde la nube"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Sincronizar en Vivo</span>
+              </button>
+
+              <button
                 onClick={() => setShowSettings(!showSettings)}
                 className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border ${
                   showSettings
@@ -310,7 +347,7 @@ export default function AdminPage({ onBackToInvitation }) {
               <div className="flex items-center justify-between border-b border-slate-700 pb-3">
                 <h3 className="font-bold text-white text-sm flex items-center gap-2">
                   <Settings className="w-4 h-4 text-purple-400" />
-                  <span>Configuración del Panel & WhatsApp API</span>
+                  <span>Configuración del Panel, Cloud Sync & WhatsApp API</span>
                 </h3>
                 {statusMessage && (
                   <span className="text-xs font-semibold text-emerald-400">{statusMessage}</span>
@@ -318,7 +355,47 @@ export default function AdminPage({ onBackToInvitation }) {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* 1. API CallMeBot */}
+                {/* 1. Base de Datos Compartida en la Nube (Google Sheets) */}
+                <div className="md:col-span-2 p-4 rounded-xl bg-slate-900 border border-purple-500/30 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+                      <span className="text-base">☁️</span>
+                      <span>Base de Datos Compartida en Tiempo Real (Google Sheets / REST)</span>
+                    </div>
+                    <span className="text-[10px] bg-purple-500/20 text-purple-300 font-mono px-2 py-0.5 rounded">
+                      Sincronización Multidispositivo
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Para que los votos y confirmaciones se vean en todos los celulares y navegadores en tiempo real, pega aquí la URL de tu aplicación web de Google Sheets (instrucciones en <code className="text-purple-300 font-mono">google-sheets-backend.js</code>).
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                    <input
+                      type="url"
+                      value={cloudUrlInput}
+                      onChange={(e) => setCloudUrlInput(e.target.value)}
+                      placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                      className="flex-1 px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-xs text-white font-mono outline-none focus:border-purple-400"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSaveCloudUrl}
+                      className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs rounded-lg transition-colors shrink-0 shadow-md"
+                    >
+                      Guardar y Conectar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleManualSync}
+                      className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold text-xs rounded-lg transition-colors shrink-0 flex items-center justify-center gap-1.5"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Probar Conexión</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. API CallMeBot */}
                 <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 space-y-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-slate-200">
                     <Smartphone className="w-4 h-4 text-emerald-400" />
@@ -352,7 +429,7 @@ export default function AdminPage({ onBackToInvitation }) {
                   </div>
                 </div>
 
-                {/* 2. Cambiar PIN de Acceso */}
+                {/* 3. Cambiar PIN de Acceso */}
                 <form onSubmit={handleChangePin} className="p-4 rounded-xl bg-slate-900 border border-slate-700 space-y-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-slate-200">
                     <Key className="w-4 h-4 text-amber-400" />
