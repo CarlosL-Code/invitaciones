@@ -8,17 +8,9 @@ export default function Navbar({ currentUser, onOpenRegistration }) {
 
   // Autoarranque de música al primer gesto del usuario
   useEffect(() => {
+    musicBox.onStateChange((playing) => setIsPlaying(playing));
     musicBox.setupAutoStart();
-
-    // Detectar cuando la música arranca automáticamente
-    const checkPlaying = setInterval(() => {
-      if (musicBox.isPlaying && !isPlaying) {
-        setIsPlaying(true);
-      }
-    }, 500);
-
-    return () => clearInterval(checkPlaying);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleMusic = () => {
     const active = musicBox.toggle();
