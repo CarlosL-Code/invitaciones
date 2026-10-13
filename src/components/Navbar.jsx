@@ -66,6 +66,16 @@ export default function Navbar({ currentUser, onOpenRegistration, onOpenAdmin })
               </button>
             )}
 
+            {/* Botón Panel de Papás */}
+            <button
+              onClick={onOpenAdmin}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-100/90 hover:bg-purple-200 text-purple-800 text-xs font-bold transition-all border border-purple-200 shadow-xs cursor-pointer shrink-0"
+              title="Panel Administrativo de Asistencia (Requiere PIN)"
+            >
+              <span className="text-xs">👑</span>
+              <span className="hidden xs:inline">Panel Papás</span>
+            </button>
+
             {/* Music button */}
             <button
               onClick={toggleMusic}
@@ -130,9 +140,10 @@ export default function Navbar({ currentUser, onOpenRegistration, onOpenAdmin })
                 setMobileMenuOpen(false);
                 if (onOpenAdmin) onOpenAdmin();
               }}
-              className="text-left px-3 py-2 text-xs text-slate-400 hover:text-slate-600"
+              className="mt-2 w-full py-2.5 px-3 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-800 font-bold text-xs flex items-center justify-center gap-2 border border-purple-200 shadow-xs transition-colors"
             >
-              Panel de Papás (Admin)
+              <span>👑</span>
+              <span>Panel de Papás (Requiere PIN)</span>
             </button>
           </div>
         </div>

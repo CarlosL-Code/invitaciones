@@ -22,15 +22,15 @@ export default function Footer({ onOpenAdmin }) {
           "Cada hijo es una promesa de amor infinito. Gracias por ser parte de nuestra historia y acompañarnos en este hermoso comienzo."
         </p>
 
-        <div className="flex items-center gap-4 text-xs text-slate-400">
-          <span>Sábado 7 de Noviembre • 2026</span>
-          <span>•</span>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-xs text-slate-500 pt-2">
+          <span>Sábado 7 de Noviembre de 2026 • 14:00 hrs</span>
+          <span className="hidden sm:inline">•</span>
           <button
             onClick={onOpenAdmin}
-            className="hover:text-purple-600 transition-colors inline-flex items-center gap-1 text-[11px]"
+            className="px-4 py-2 rounded-xl bg-purple-100/90 hover:bg-purple-200 text-purple-800 font-bold text-xs inline-flex items-center gap-2 border border-purple-200 shadow-xs transition-all cursor-pointer"
           >
-            <Settings className="w-3.5 h-3.5" />
-            <span>Panel de Papás</span>
+            <span>👑</span>
+            <span>Panel de Papás (Estefanía & Carlos)</span>
           </button>
         </div>
       </div>
