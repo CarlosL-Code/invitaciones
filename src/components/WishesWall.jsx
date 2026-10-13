@@ -1,4 +1,5 @@
 import { Heart, MessageSquareQuote, Sparkles } from 'lucide-react';
+import hijaPapaImg from '../assets/hija_papa.png';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { RevealTeddy } from './TeddyBears';
 
@@ -19,7 +20,7 @@ export default function WishesWall({ guests = [] }) {
   return (
     <section className="py-16 px-4 sm:px-6 relative">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-xs font-semibold uppercase tracking-wider mb-2">
             <MessageSquareQuote className="w-3.5 h-3.5" />
             <span>Libro de Recuerdos Público</span>
@@ -30,6 +31,32 @@ export default function WishesWall({ guests = [] }) {
           <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
             Dedicatorias compartidas con mucho cariño para {parents.motherName}, {parents.fatherName} y el nuevo bebé.
           </p>
+        </div>
+
+        {/* Carlos y Lisbeth enviando un besito y agradeciendo */}
+        <div className="glass-card rounded-3xl p-4 sm:p-6 mb-8 border border-purple-200/80 shadow-md flex flex-col sm:flex-row items-center gap-4 sm:gap-6 bg-gradient-to-r from-purple-50/80 via-white to-pink-50/80 max-w-2xl mx-auto">
+          <div className="relative group shrink-0">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-purple-300 via-pink-300 to-sky-300 rounded-full blur-md opacity-70 group-hover:opacity-100 transition-opacity animate-pulse-subtle" />
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white shadow-lg mx-auto bg-slate-100">
+              <img
+                src={hijaPapaImg}
+                alt="Carlos y Lisbeth"
+                className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-white text-[10px] font-bold text-purple-700 shadow-xs border border-purple-200 whitespace-nowrap">
+              Carlos & Lisbeth 😘
+            </span>
+          </div>
+
+          <div className="text-center sm:text-left flex-1">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-slate-800 mb-1">
+              "¡Gracias de corazón por cada dedicatoria!"
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Papá Carlos y la pequeña Lisbeth leemos cada saludo con mucha ilusión. ¡Tus palabras quedarán atesoradas para siempre en el álbum del nuevo bebé!
+            </p>
+          </div>
         </div>
 
         {actualWishes.length === 0 ? (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { User, Mail, Phone, Sparkles, Heart } from 'lucide-react';
-import { RevealTeddy } from './TeddyBears';
+import papaHijaImg from '../assets/papa_hija_2.png';
 import { triggerCelebrationConfetti } from '../utils/confetti';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { storageService } from '../services/storageService';
@@ -48,9 +48,18 @@ export default function RegistrationModal({ isOpen, onRegister }) {
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-sky-200/50 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-rose-200/50 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Teddy Mascot Illustration */}
-        <div className="mb-2 flex justify-center">
-          <RevealTeddy className="w-24 h-24 sm:w-28 sm:h-28" />
+        {/* Retrato Familiar de Carlos y Lisbeth Sonriendo */}
+        <div className="mb-3 flex justify-center">
+          <div className="relative group">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-purple-400 via-pink-400 to-sky-400 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity animate-pulse-subtle" />
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white shadow-xl bg-purple-50">
+              <img
+                src={papaHijaImg}
+                alt="Carlos y Lisbeth dándote la bienvenida"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Header */}

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Sparkles, CheckCircle2, Trophy, Heart } from 'lucide-react';
 import { BoyTeddy, GirlTeddy } from './TeddyBears';
+import lisbethImg from '../assets/lisbeth.png';
 import { EVENT_CONFIG } from '../config/eventConfig';
-import { triggerBoyConfetti, triggerGirlConfetti } from '../utils/confetti';
+import { triggerBoyConfetti, triggerGirlConfetti, triggerCelebrationConfetti } from '../utils/confetti';
 import { storageService } from '../services/storageService';
 
 export default function VoteSection({ 
@@ -58,7 +59,7 @@ export default function VoteSection({
   return (
     <section id="votacion" className="py-16 px-4 sm:px-6 relative">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold uppercase tracking-wider mb-2">
             <Trophy className="w-3.5 h-3.5" />
             <span>Juego Interactivo</span>
@@ -74,6 +75,37 @@ export default function VoteSection({
               Votando como: <strong>{currentUser.fullName}</strong>
             </p>
           )}
+        </div>
+
+        {/* Lisbeth Interactivamente preguntando el voto */}
+        <div className="glass-card rounded-3xl p-4 sm:p-6 mb-8 border border-purple-200/80 shadow-md flex flex-col sm:flex-row items-center gap-4 sm:gap-6 bg-gradient-to-r from-pink-50/80 via-white to-sky-50/80">
+          <div
+            className="relative cursor-pointer group shrink-0"
+            onClick={triggerCelebrationConfetti}
+            title="¡Tócame para ver confeti con Lisbeth! ✨"
+          >
+            <div className="absolute -inset-2 bg-gradient-to-r from-pink-300 to-purple-300 rounded-full blur-md opacity-60 group-hover:opacity-100 transition-opacity" />
+            <img
+              src={lisbethImg}
+              alt="Hermanita mayor Lisbeth"
+              className="relative w-24 sm:w-32 max-h-44 object-contain drop-shadow-md animate-soft-float group-hover:scale-105 transition-transform"
+            />
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-white text-[10px] font-bold text-purple-700 shadow-xs border border-purple-200 whitespace-nowrap">
+              👧 Lisbeth
+            </span>
+          </div>
+
+          <div className="text-center sm:text-left flex-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-pink-600 bg-pink-100/70 px-2.5 py-0.5 rounded-full inline-block mb-1.5">
+              La Hermana Mayor pregunta:
+            </span>
+            <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-800 mb-1.5">
+              "¡Hola! Estoy muy emocionada de conocer a mi hermanito o hermanita" 💕
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              ¿Cuál es tu predicción? ¿Crees que tendré un compañero de juegos 👦 o una compañera de aventuras 👧? ¡Vota a continuación por tu equipo preferido!
+            </p>
+          </div>
         </div>
 
         {/* Voting Cards */}

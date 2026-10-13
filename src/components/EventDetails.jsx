@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, MapPin, Clock, Shirt, Navigation, Copy, Check, ExternalLink, Sparkles, Cake, PartyPopper } from 'lucide-react';
+import estefaniaImg from '../assets/estefania_alegre.png';
 import { EVENT_CONFIG } from '../config/eventConfig';
 
 export default function EventDetails() {
@@ -23,7 +24,7 @@ export default function EventDetails() {
   return (
     <section id="detalles" className="py-16 px-4 sm:px-6 relative">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <span className="text-xs font-bold uppercase tracking-widest text-rose-500 mb-2 block">
             Planifica tu visita
           </span>
@@ -33,6 +34,37 @@ export default function EventDetails() {
           <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto">
             Hemos preparado cada momento con mucho amor para disfrutar juntos este Sábado 7 de Noviembre.
           </p>
+        </div>
+
+        {/* Mamá Estefanía dándote la bienvenida al evento */}
+        <div className="glass-card rounded-3xl p-5 sm:p-7 mb-10 border border-rose-200/80 shadow-md flex flex-col md:flex-row items-center gap-6 bg-gradient-to-r from-rose-50/90 via-white to-purple-50/90">
+          <div className="relative group shrink-0">
+            <div className="absolute -inset-2 bg-gradient-to-r from-rose-300 to-pink-300 rounded-full blur-md opacity-60 group-hover:opacity-100 transition-opacity" />
+            <img
+              src={estefaniaImg}
+              alt="Mamá Estefanía esperando al bebé"
+              className="relative w-28 sm:w-36 max-h-52 object-contain drop-shadow-lg animate-soft-float group-hover:scale-105 transition-transform"
+            />
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-white text-[10px] font-bold text-rose-700 shadow-xs border border-rose-200 whitespace-nowrap">
+              🤰 Mamá Estefanía
+            </span>
+          </div>
+
+          <div className="text-center md:text-left flex-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 bg-rose-100/70 px-2.5 py-0.5 rounded-full inline-block mb-1.5">
+              Bienvenida con Cariño
+            </span>
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+              "¡Cada detalle lo soñamos para vivirlo contigo!" 🌸
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
+              Estamos en la dulce espera de nuestro mayor tesoro. Preparamos una jornada llena de juegos, rica comida para compartir y la más linda revelación a las <strong>16:30 hrs</strong>. ¡Ven a disfrutar desde las <strong>14:00 hrs</strong>!
+            </p>
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-semibold text-purple-700">
+              <span className="px-3 py-1 rounded-full bg-purple-50 border border-purple-200">✨ Comienza 14:00 hrs</span>
+              <span className="px-3 py-1 rounded-full bg-rose-50 border border-rose-200">🎈 Revelación 16:30 hrs</span>
+            </div>
+          </div>
         </div>
 
         {/* 3 Main Highlight Cards */}

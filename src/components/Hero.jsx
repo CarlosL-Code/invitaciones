@@ -1,6 +1,7 @@
 import { Sparkles, Calendar, MapPin, Heart, UserCheck } from 'lucide-react';
 import Countdown from './Countdown';
 import heroImg from '../assets/hero.png';
+import papasImg from '../assets/papas_sonriendo.png';
 import { EVENT_CONFIG } from '../config/eventConfig';
 import { triggerCelebrationConfetti } from '../utils/confetti';
 
@@ -17,7 +18,7 @@ export default function Hero({ currentUser, onOpenRegistration }) {
       <div className="max-w-3xl mx-auto flex flex-col items-center">
         {/* User Greeting Pill if registered */}
         {currentUser ? (
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-4 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-3 shadow-xs">
             <UserCheck className="w-4 h-4 text-emerald-600" />
             <span>¡Hola, <strong>{currentUser.fullName}</strong>! Bienvenido/a</span>
             <button
@@ -30,7 +31,7 @@ export default function Hero({ currentUser, onOpenRegistration }) {
         ) : (
           <button
             onClick={onOpenRegistration}
-            className="cursor-pointer group inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-rose-200/60 shadow-sm hover:scale-105 transition-all duration-300 mb-4"
+            className="cursor-pointer group inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-rose-200/60 shadow-sm hover:scale-105 transition-all duration-300 mb-3"
           >
             <Sparkles className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '4s' }} />
             <span className="text-xs uppercase tracking-widest font-bold bg-gradient-to-r from-rose-600 to-sky-600 bg-clip-text text-transparent">
@@ -40,12 +41,24 @@ export default function Hero({ currentUser, onOpenRegistration }) {
           </button>
         )}
 
+        {/* Retrato Ilustrado de los Papás Sonriendo */}
+        <div className="relative my-2 mb-3 group cursor-pointer" onClick={triggerCelebrationConfetti} title="¡Tócame para celebrar! ✨">
+          <div className="absolute -inset-1 bg-gradient-to-r from-rose-400 via-purple-300 to-sky-400 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-500 animate-pulse-subtle" />
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-white shadow-xl mx-auto bg-gradient-to-b from-purple-50 to-pink-50">
+            <img
+              src={papasImg}
+              alt="Estefanía y Carlos"
+              className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-500"
+            />
+          </div>
+          <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-white/95 border border-purple-200 text-[10px] sm:text-xs font-bold text-purple-700 shadow-sm whitespace-nowrap">
+            Estefanía & Carlos 💕
+          </span>
+        </div>
+
         {/* Script Intro with Family Names */}
-        <div className="flex flex-col items-center mb-1">
-          <p className="font-script text-3xl sm:text-5xl text-rose-500">
-            {parents.motherName} & {parents.fatherName}
-          </p>
-          <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-purple-700 bg-purple-50/90 px-3.5 py-1 rounded-full border border-purple-200/80 mt-1 shadow-2xs">
+        <div className="flex flex-col items-center mt-2 mb-1">
+          <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-purple-700 bg-purple-50/90 px-3.5 py-1 rounded-full border border-purple-200/80 shadow-2xs">
             <span>👧</span>
             <span>junto a la hermanita mayor <strong>{parents.sisterName}</strong></span>
           </span>
