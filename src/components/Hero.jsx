@@ -40,13 +40,19 @@ export default function Hero({ currentUser, onOpenRegistration }) {
           </button>
         )}
 
-        {/* Script Intro with Parents Names */}
-        <p className="font-script text-3xl sm:text-5xl text-rose-500 mb-1">
-          {parents.motherName} & {parents.fatherName}
-        </p>
+        {/* Script Intro with Family Names */}
+        <div className="flex flex-col items-center mb-1">
+          <p className="font-script text-3xl sm:text-5xl text-rose-500">
+            {parents.motherName} & {parents.fatherName}
+          </p>
+          <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-purple-700 bg-purple-50/90 px-3.5 py-1 rounded-full border border-purple-200/80 mt-1 shadow-2xs">
+            <span>👧</span>
+            <span>junto a la hermanita mayor <strong>{parents.sisterName}</strong></span>
+          </span>
+        </div>
 
         {/* Main Title */}
-        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-800 leading-tight mb-2">
+        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-800 leading-tight mb-2 mt-2">
           ¿Será <span className="text-rose-500 font-serif italic">Princesa</span> o <span className="text-sky-500 font-serif italic">Príncipe</span>?
         </h1>
 
@@ -75,7 +81,7 @@ export default function Hero({ currentUser, onOpenRegistration }) {
         </div>
 
         <p className="max-w-xl text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-normal">
-          Un nuevo milagro de amor está creciendo en nuestras vidas. Queremos compartir con nuestras personas favoritas el momento en que descubriremos su sexo.
+          Un nuevo milagro de amor llega a iluminar nuestra familia. Papá Carlos, mamá Estefanía y la hermana mayor <strong>{parents.sisterName}</strong> queremos compartir con nuestras personas favoritas el gran momento en que descubriremos su sexo.
         </p>
 
         {/* Date and Location Pills */}

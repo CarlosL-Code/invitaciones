@@ -1,8 +1,9 @@
 export const EVENT_CONFIG = {
-  // Información de los Padres y Bebé
+  // Información de la Familia y Bebé
   parents: {
     motherName: "Estefanía",
     fatherName: "Carlos",
+    sisterName: "Lisbeth",
     babyNickName: "Nuestro Pequeño Amor",
   },
 
